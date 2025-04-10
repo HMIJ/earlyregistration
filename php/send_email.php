@@ -5,6 +5,7 @@ use PHPMailer\PHPMailer\Exception;
 require 'vendor/autoload.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    echo "POST request received!";
     $email = $_POST['email'];
     $fullname = $_POST['fullname'];
 
