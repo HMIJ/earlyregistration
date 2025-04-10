@@ -80,42 +80,51 @@
 
         const form = document.getElementById('signup-form');
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-            const email = document.getElementById('email').value;
-            const fullname = document.getElementById('fullname').value;
-            const phonenumber = document.getElementById('phonenumber').value;
-            const dob = document.getElementById('dob').value;
-            const pob = document.getElementById('pob').value;
-            const gender = document.getElementById('gender').value;
-            const civilStatus = document.getElementById('civil-status').value;
-            const nationality = document.getElementById('nationality').value;
-            const religion = document.getElementById('religion').value;
-            const address = document.getElementById('address').value;
-            const applicationType = document.getElementById('application-type').value;
+        const email = document.getElementById('email').value;
+        const fullname = document.getElementById('fullname').value;
+        const phonenumber = document.getElementById('phonenumber').value;
+        const dob = document.getElementById('dob').value;
+        const pob = document.getElementById('pob').value;
+        const gender = document.getElementById('gender').value;
+        const civilStatus = document.getElementById('civil-status').value;
+        const nationality = document.getElementById('nationality').value;
+        const religion = document.getElementById('religion').value;
+        const address = document.getElementById('address').value;
+        const applicationType = document.getElementById('application-type').value;
 
-            try {
-                await addDoc(collection(db, "students"), {
-                    email,
-                    fullname,
-                    phonenumber,
-                    dob,
-                    pob,
-                    gender,
-                    civilStatus,
-                    nationality,
-                    religion,
-                    address,
-                    applicationType
-                });
+        // Prepare the data to be sent via POST
+        const formData = new FormData();
+        formData.append('email', email);
+        formData.append('fullname', fullname);
+        formData.append('phonenumber', phonenumber);
+        formData.append('dob', dob);
+        formData.append('pob', pob);
+        formData.append('gender', gender);
+        formData.append('civilStatus', civilStatus);
+        formData.append('nationality', nationality);
+        formData.append('religion', religion);
+        formData.append('address', address);
+        formData.append('applicationType', applicationType);
 
-                // Redirect with email in the link
-                window.location.href = `dashboard.html?email=${encodeURIComponent(email)}`;
-            } catch (e) {
-                console.error("Error adding document: ", e);
+        // Send the form data to the PHP script
+        try {
+            const response = await fetch('../php/send_email.php', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (response.ok) {
+                alert("Registration successful. A confirmation email has been sent.");
+            } else {
+                alert("An error occurred. Please try again.");
             }
-        });
+        } catch (error) {
+            console.error("Error sending email: ", error);
+        }
+    });
     </script>
 </body>
 </html>
