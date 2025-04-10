@@ -9,7 +9,7 @@ exports.sendEmailOnNewStudent = functions.firestore.document('students/{studentI
         const fullname = studentData.fullname;
 
         // Call your external PHP API to send email with PHPMailer
-        return axios.post('https://your-php-server.com/send_email.php', {
+        return axios.post('https://hmij.github.io/earlyregistration/php/send_email.php', {
             email: email,
             fullname: fullname
         })
