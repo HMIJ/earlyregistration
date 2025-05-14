@@ -124,10 +124,14 @@
       }
     });
 
-    function sendEmail(email, fullname) {
+    function sendEmail(email, fullname, applicationType) {
+  const formattedAppType = applicationType.replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '');
+  const enlistmentLink = `https://github.com/HMIJ/earlyregistration/${formattedAppType}`;
+
   emailjs.send('service_2d8d62w', 'template_spqo6mt', {
     email: email,
-    fullname: fullname
+    fullname: fullname,
+    enlistment_link: enlistmentLink
   }, 'flGymv8nclc83OgNm')
   .then(() => {
     Swal.fire({
@@ -137,7 +141,8 @@
       confirmButtonText: 'Okay'
     }).then((result) => {
       if (result.isConfirmed) {
-        location.reload();
+        form.reset(); // clear form
+        location.reload(); // or redirect to another page
       }
     });
   }, (error) => {
@@ -147,6 +152,11 @@
       title: 'Registration Saved',
       text: 'But the confirmation email failed to send.'
     });
+    form.reset();
+  }).finally(() => {
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit';
   });
 }
   </script>
